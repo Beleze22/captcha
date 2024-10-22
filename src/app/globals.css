@@ -43,6 +43,29 @@ a {
 
 .captcha {
 	background-color: antiquewhite;
+	display: flex;
+	padding: 15px;
+}
+
+.captchaImg {
+	position: relative;
+}
+
+.captchaImg button {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	padding: 1.5px 4px;
+}
+
+.captchaInteraction {
+	display: flex;
+	flex-direction: column;
+}
+
+.inputAndButton {
+	display: flex;
+	gap: 5px;
 }
 
 .captchaResult {

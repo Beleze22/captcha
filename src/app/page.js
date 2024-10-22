@@ -29,9 +29,7 @@ export default function Home() {
 
 		const newCaptchaText = generateCaptchaText();
 		setCaptchaText(newCaptchaText);
-		console.log(newCaptchaText);
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.font = "30px Arial";
 
 		function getRandomColor() {
 			let letters = "0123456789ABCDEF";
@@ -68,9 +66,19 @@ export default function Home() {
 				Math.random() * canvas.height
 			);
 		}
+		context.strokeStyle = getRandomColor();
 		context.stroke();
 
-		context.fillText(newCaptchaText, 10, 35);
+		for (let i = 0; i < newCaptchaText.length; i++) {
+			context.font = `${Math.random() * 20 + 20}px Arial`;
+			let angle = Math.random() * 0.4 - 0.2;
+			context.save();
+			context.translate(0 + i * 25, 35);
+			context.rotate(angle);
+			context.fillStyle = "#000";
+			context.fillText(newCaptchaText[i], 5, -5);
+			context.restore();
+		}
 	}
 
 	function inputHandler(event) {
@@ -82,6 +90,7 @@ export default function Home() {
 			setcaptchaResult(true);
 		} else {
 			generateCaptcha();
+			setInputCaptcha("");
 		}
 	}
 
@@ -98,36 +107,43 @@ export default function Home() {
 		<div className={styles.page}>
 			<main className={styles.main}>
 				<div className="captcha">
-					<canvas id="captchaCanvas" width="150" height="50"></canvas>
-					<button type="button" onClick={generateCaptcha}>
-						Refresh CAPTCHA
-					</button>
-					<label for="captchaInput">
-						Enter the text from the image:
-					</label>
-					<input
-						type="text"
-						id="captchaInput"
-						name="captchaInput"
-						value={inputCaptcha}
-						onChange={inputHandler}
-						required
-					/>
-					<button onClick={validateCaptcha}>Check</button>
-				</div>
-				<div className="captchaResult">
 					{captchaResult ? (
 						<>
 							<div className="passou">OK</div>
 						</>
 					) : (
 						<>
-							<div className="naoPassou">NOK</div>
+							<div className="captchaImg">
+								<canvas
+									id="captchaCanvas"
+									width="150"
+									height="50"
+								></canvas>
+								<button type="button" onClick={generateCaptcha}>
+									Refresh
+								</button>
+							</div>
+							<div className="captchaInteraction">
+								<label for="captchaInput">
+									Insira o texto da imagem:
+								</label>
+								<div className="inputAndButton">
+									<input
+										type="text"
+										id="captchaInput"
+										name="captchaInput"
+										value={inputCaptcha}
+										onChange={inputHandler}
+										required
+									/>
+									<button onClick={validateCaptcha}>
+										Check
+									</button>
+								</div>
+							</div>
 						</>
 					)}
 				</div>
-				<h1>{inputCaptcha}</h1>
-				<h2>{captchaText}</h2>
 			</main>
 		</div>
 	);
